@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Johannes Brinz – Philosophy of AI &amp; Neuroscience</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary: #2C2C2B;
+      --text-secondary: #7D7A75;
+      --canvas: #FFFFFF;
+      --surface-soft: #F9F8F7;
+      --surface-secondary: #F0EFED;
+      --border: #E6E5E3;
+      --accent: #2783DE;
+      --accent-soft: #E5F2FC;
+      --max-w: 760px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--canvas);
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    nav .nav-inner {
+      max-width: calc(var(--max-w) + 96px);
+      margin: 0 auto;
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    nav .nav-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul a {
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    nav ul a:hover { color: var(--text-primary); }
+
+    /* SECTIONS */
+    section {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 72px 24px;
+    }
+
+    /* HERO */
+    #hero {
+      padding-top: 88px;
+      padding-bottom: 88px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero-label {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+    .hero-tagline {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+    }
+    .btn-primary:hover { background: #1a6ec0; }
+    .btn-secondary {
+      background: var(--surface-soft);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--surface-secondary); }
+
+    img.avatar {
+      object-fit: cover;
+      object-position: center top;
+    }
+    .avatar {
+      width: 116px;
+      height: 116px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #daeeff 0%, #c4dff8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 46px;
+      flex-shrink: 0;
+      border: 3px solid var(--border);
+      user-select: none;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    /* SECTION HEADINGS */
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .section-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+    }
+
+    /* ABOUT */
+    .about-text {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+    .about-text p + p { margin-top: 16px; }
+
+    /* TAGS */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+    .tag {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid #c8e2f8;
+    }
+    .tag-gray {
+      background: var(--surface-secondary);
+      color: var(--text-secondary);
+      border-color: var(--border);
+    }
+
+    /* PUBLICATIONS */
+    .pub-section + .pub-section { margin-top: 40px; }
+    .pub-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .pub-item {
+      padding: 20px 22px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color 0.15s;
+    }
+    .pub-item:hover { border-color: #a8d0f0; }
+    .pub-venue {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+    .pub-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    .pub-authors {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+    .pub-authors strong { color: var(--text-primary); font-weight: 600; }
+    .pub-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .pub-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .pub-link:hover { text-decoration: underline; }
+
+    /* TALKS */
+    .talk-group + .talk-group { margin-top: 32px; }
+    .talk-group-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .talk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .talk-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: baseline;
+      font-size: 14px;
+    }
+    .talk-year {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      padding-top: 1px;
+    }
+    .talk-title { font-style: italic; color: var(--text-primary); font-weight: 500; }
+    .talk-venue { color: var(--text-secondary); }
+
+    /* CV ITEMS */
+    .cv-list { display: flex; flex-direction: column; }
+    .cv-item {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 20px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cv-item:first-child { border-top: 1px solid var(--border); }
+    .cv-date { font-size: 13px; color: var(--text-secondary); padding-top: 2px; }
+    .cv-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+    .cv-sub { font-size: 13px; color: var(--text-secondary); }
+    .cv-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* AWARDS */
+    .award-list { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+    .award-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 20px;
+      font-size: 14px;
+    }
+    .award-year { color: var(--text-secondary); font-size: 13px; }
+    .award-name { font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+    .award-desc { font-size: 13px; color: var(--text-secondary); }
+
+    /* CONTACT */
+    #contact {
+      background: var(--surface-soft);
+      max-width: 100%;
+      border-top: 1px solid var(--border);
+    }
+    #contact .contact-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 72px 24px;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+    .contact-row a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .contact-row a:hover { text-decoration: underline; }
+    .contact-icon {
+      width: 32px; height: 32px;
+      background: var(--surface-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      nav .nav-inner { padding: 0 20px; }
+      nav ul { gap: 16px; }
+      #hero { grid-template-columns: 1fr; gap: 28px; padding-top: 56px; }
+      .avatar { width: 72px; height: 72px; font-size: 28px; }
+      h1 { font-size: 28px; }
+      section { padding: 56px 20px; }
+      .cv-item { grid-template-columns: 1fr; gap: 4px; }
+      .award-item { grid-template-columns: 1fr; gap: 2px; }
+      .talk-item { grid-template-columns: 1fr; gap: 2px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-name">Johannes Brinz</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#talks">Talks</a></li>
+      <li><a href="#teaching">Teaching</a></li>
+      <li><a href="#outreach">Outreach</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section id="hero">
+  <div>
+    <div class="hero-label">PhD Researcher &middot; University of Osnabr&uuml;ck</div>
+    <h1>Johannes Brinz</h1>
+    <p class="hero-tagline">
+      I work at the intersection of philosophy of computation, philosophy of neuroscience, and AI.
+      My research focuses on neuromorphic computation and the question of whether artificial systems
+      can duplicate&mdash;not merely simulate&mdash;the brain.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary">Get in touch</a>
+      <a href="#publications" class="btn btn-secondary">Publications</a>
+    </div>
+  </div>
+  <img class="avatar" src="data:image/jpeg;base64,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" alt="Johannes Brinz">
+</section>
+
+<hr class="divider">
+
+<section id="about">
+  <h2>About me</h2>
+  <p class="section-sub">Background &amp; motivation</p>
+  <div class="about-text">
+    <p>
+      I am a doctoral researcher at the Institute of Philosophy, University of Osnabr&uuml;ck, where I have
+      been a Research Assistant since October 2022. My dissertation investigates the philosophical foundations
+      of neuromorphic computation&mdash;asking whether brain-inspired hardware can genuinely duplicate the
+      computational structure of biological neural systems, or whether it only simulates them.
+    </p>
+    <p>
+      My background is interdisciplinary: I hold a <strong>MA in Philosophy</strong> (TU Dresden, grade 1.1),
+      a <strong>BSc in Physics</strong> (TU Dresden), and a <strong>BA in Philosophy</strong> (TU Dresden).
+      Earlier, I studied Mechanical Engineering at TU Munich and have done exchange semesters in Lisbon and
+      Belo Horizonte. This breadth informs my approach to the philosophy of mind and AI.
+    </p>
+    <p>
+      I am currently seeking <strong>postdoctoral positions</strong> in philosophy of mind, philosophy of
+      AI, or philosophy of science, ideally starting in 2026/27.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="research">
+  <h2>Research interests</h2>
+  <p class="section-sub">Topics I think and write about</p>
+  <div class="about-text">
+    <p>
+      My work centres on <strong>non-classical computation</strong>&mdash;specifically whether neuromorphic
+      computers can duplicate the mammalian brain&rsquo;s computational structure rather than merely
+      approximate it. I draw on philosophy of science and philosophy of mind to analyse what kinds of models
+      neurocomputational science produces and what it would mean for a machine to be computationally
+      equivalent to a brain.
+    </p>
+    <p>
+      I am also an associated member of the Research Training Group
+      <em>Situated Cognition</em> (Universities of Osnabr&uuml;ck and Bochum) and co-editor (with
+      Gualtiero Piccinini) of a topical collection on <em>Philosophy of Neuromorphic AI</em>
+      in <em>Philosophy of AI</em>.
+    </p>
+  </div>
+  <div>
+    <div class="tags" style="margin-bottom:10px">
+      <span class="tag">Philosophy of Neuroscience</span>
+      <span class="tag">Philosophy of Computation</span>
+      <span class="tag">Philosophy of AI</span>
+      <span class="tag">Neuromorphic Computation</span>
+    </div>
+    <div class="tags">
+      <span class="tag tag-gray">Philosophy of Mind</span>
+      <span class="tag tag-gray">Philosophy of Science</span>
+      <span class="tag tag-gray">Philosophy of Language</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="publications">
+  <h2>Publications</h2>
+  <p class="section-sub">Peer-reviewed articles, preprints &amp; reference works</p>
+
+  <div class="pub-section">
+    <div class="pub-section-label">Journal Articles</div>
+    <div class="pub-list">
+      <div class="pub-item">
+        <div class="pub-venue">Synthese 207:110 &middot; 2026</div>
+        <div class="pub-title">From Simulating to Duplicating the Brain</div>
+        <div class="pub-authors"><strong>Johannes Brinz</strong></div>
+        <div class="pub-links">
+          <a href="https://link.springer.com/article/10.1007/s11229-026-05505-0" class="pub-link" target="_blank">&nearr; Springer</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pub-section">
+    <div class="pub-section-label">Conference Proceedings</div>
+    <div class="pub-list">
+      <div class="pub-item">
+        <div class="pub-venue">Proceedings MBR.26, Springer &ldquo;Sapere&rdquo; &middot; forthcoming</div>
+        <div class="pub-title">What are Neurocomputational Models</div>
+        <div class="pub-authors"><strong>Johannes Brinz</strong></div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-venue">Proceedings, 45th Wittgenstein Symposium &middot; 2024</div>
+        <div class="pub-title">Are Artificial Neurons Neurons?</div>
+        <div class="pub-authors"><strong>Johannes Brinz</strong></div>
+        <div class="pub-links">
+          <a href="https://philarchive.org/archive/TIJMRA#page=99" class="pub-link" target="_blank">&nearr; PhilArchive</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pub-section">
+    <div class="pub-section-label">Preprints</div>
+    <div class="pub-list">
+      <div class="pub-item">
+        <div class="pub-venue">PhilArchive &middot; 2025 &middot; DOI: 10.5281/zenodo.14980541</div>
+        <div class="pub-title">The Flashcard Sorter &mdash; Applicability of the Chinese Room Argument to Large Language Models</div>
+        <div class="pub-authors"><strong>Johannes Brinz</strong></div>
+        <div class="pub-links">
+          <a href="https://philarchive.org/archive/BRITFS-2" class="pub-link" target="_blank">&nearr; PhilArchive</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pub-section">
+    <div class="pub-section-label">Encyclopedia Entries</div>
+    <div class="pub-list">
+      <div class="pub-item">
+        <div class="pub-venue">Kindlers Literatur Lexikon (KLL), J.B. Metzler &middot; 2026</div>
+        <div class="pub-title">Chirimuuta, Mazviita: The Brain Abstracted</div>
+        <div class="pub-authors"><strong>Johannes Brinz</strong>. In: Arnold, H.L. (eds)</div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-venue">W&ouml;rterbuch Sprach- &amp; Kommunikationswissenschaft &middot; forthcoming</div>
+        <div class="pub-title">Nicht-klassische Logik &amp; Signal</div>
+        <div class="pub-authors"><strong>Johannes Brinz</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="talks">
+  <h2>Talks</h2>
+  <p class="section-sub">Selected presentations at conferences and workshops</p>
+
+  <div class="talk-group">
+    <div class="talk-group-label">Invited</div>
+    <div class="talk-list">
+      <div class="talk-item">
+        <div class="talk-year">2026</div>
+        <div>
+          <span class="talk-title">Three Versions of Functionalism</span>
+          <span class="talk-venue"> &mdash; Workshop on the Unfolding Argument, FU Berlin</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="talk-group">
+    <div class="talk-group-label">Contributed (selected)</div>
+    <div class="talk-list">
+      <div class="talk-item">
+        <div class="talk-year">2026</div>
+        <div>
+          <span class="talk-title">Marr&rsquo;s Fourth Level</span>
+          <span class="talk-venue"> &mdash; Philosophical Issues in Neural Computation, Ruhr-Uni Bochum &amp; PPIG, University of Edinburgh</span>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-year">2026</div>
+        <div>
+          <span class="talk-title">Functionalism and Neural Realization</span>
+          <span class="talk-venue"> &mdash; 6ICPH, University of Porto &amp; WiP Seminar, University of Edinburgh</span>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-year">2025</div>
+        <div>
+          <span class="talk-title">Can Artificial Neurons Perform the Functions of Biological Neurons?</span>
+          <span class="talk-venue"> &mdash; SOPhiA, University of Salzburg &amp; MindMU, University of Missouri</span>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-year">2025</div>
+        <div>
+          <span class="talk-title">From Simulating to Duplicating the Brain</span>
+          <span class="talk-venue"> &mdash; IACAP/AISB-25, University of Twente</span>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-year">2025</div>
+        <div>
+          <span class="talk-title">The Flashcard Sorter</span>
+          <span class="talk-venue"> &mdash; GAP.12, Heinrich Heine University D&uuml;sseldorf &amp; LLMs Workshop, University of Bucharest &amp; PinT, Wroclaw</span>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-year">2024</div>
+        <div>
+          <span class="talk-title">Are Artificial Neurons Neurons?</span>
+          <span class="talk-venue"> &mdash; 45th Wittgenstein Symposium, Kirchberg am Wechsel &amp; Models of Consciousness, Bamberg</span>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-year">2024</div>
+        <div>
+          <span class="talk-title">Neuromorphic AI: From Simulating Toward Duplicating the Brain</span>
+          <span class="talk-venue"> &mdash; Forum on Philosophy, Engineering &amp; Technology, Karlsruhe</span>
+        </div>
+      </div>
+      <div class="talk-item">
+        <div class="talk-year">2024</div>
+        <div>
+          <span class="talk-title">From Simulating Towards Replicating the Brain</span>
+          <span class="talk-venue"> &mdash; Philosophy of Neuromorphic AI, online &nbsp;<a href="https://www.youtube.com/watch?v=Dk9Q_F45pNI&t=3s" target="_blank" style="color:var(--accent);font-style:normal;font-size:12px">&#9654; Video</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="outreach">
+  <h2>Public Outreach</h2>
+  <p class="section-sub">Lecture series and recorded talks on YouTube</p>
+  <div class="pub-list">
+
+    <div class="pub-item">
+      <div class="pub-venue">Lecture Series &middot; German &middot; YouTube</div>
+      <div class="pub-title">Wittgenstein &ndash; Tractatus Logico-Philosophicus</div>
+      <div class="pub-authors">Full introductory lecture series on the Tractatus, in German</div>
+      <div class="pub-links">
+        <a href="https://www.youtube.com/playlist?list=PL3X5YkdOQm7XWuhMeyIvycPmIH3sp-NDU" class="pub-link" target="_blank">&#9654; Watch playlist</a>
+      </div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-venue">Lecture Series &middot; German &middot; YouTube</div>
+      <div class="pub-title">Introduction to Non-Classical Logic</div>
+      <div class="pub-authors">Introductory lecture series on non-classical logic, in German</div>
+      <div class="pub-links">
+        <a href="https://www.youtube.com/playlist?list=PLbEdN0Z_KbTY" class="pub-link" target="_blank">&#9654; Watch playlist</a>
+      </div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-venue">Workshop Recording &middot; Online &middot; 2024</div>
+      <div class="pub-title">Workshop on Philosophy of Neuromorphic AI</div>
+      <div class="pub-authors">Recorded sessions from the online workshop series (organiser)</div>
+      <div class="pub-links">
+        <a href="https://www.youtube.com/playlist?list=PL3X5YkdOQm7W3OnDnA3Wb0dAiKW0sb-hC" class="pub-link" target="_blank">&#9654; Watch playlist</a>
+      </div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-venue">Recorded Talk &middot; Online &middot; 2024</div>
+      <div class="pub-title">From Simulating Towards Replicating the Brain</div>
+      <div class="pub-authors">Philosophy of Neuromorphic AI online lecture series</div>
+      <div class="pub-links">
+        <a href="https://www.youtube.com/watch?v=Dk9Q_F45pNI&t=3s" class="pub-link" target="_blank">&#9654; Watch talk</a>
+      </div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-venue">Recorded Talk &middot; Online &middot; 2024</div>
+      <div class="pub-title">Virtuality and Reality &ndash; The Simulation&ndash;Realization Distinction and its Implications for AI</div>
+      <div class="pub-authors">Global Justice, Technology and Integrated Research</div>
+      <div class="pub-links">
+        <a href="https://www.youtube.com/watch?v=xa3X8AUCNhg&t=26s" class="pub-link" target="_blank">&#9654; Watch talk</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="teaching">
+  <h2>Teaching</h2>
+  <p class="section-sub">Courses at University of Osnabr&uuml;ck (and guest teaching)</p>
+  <div class="cv-list">
+    <div class="cv-item">
+      <div class="cv-date">WS 2026/27</div>
+      <div>
+        <div class="cv-title">Wittgenstein &ndash; Philosophical Investigations</div>
+        <div class="cv-sub">University of Osnabr&uuml;ck</div>
+      </div>
+    </div>
+    <div class="cv-item">
+      <div class="cv-date">SS 2026</div>
+      <div>
+        <div class="cv-title">Introduction to Non-Classical Logic</div>
+        <div class="cv-sub">University of Osnabr&uuml;ck</div>
+      </div>
+    </div>
+    <div class="cv-item">
+      <div class="cv-date">WS 2025/26</div>
+      <div>
+        <div class="cv-title">Chirimuuta &ndash; The Brain Abstracted <span class="cv-badge">Taught in English</span></div>
+        <div class="cv-sub">University of Osnabr&uuml;ck</div>
+      </div>
+    </div>
+    <div class="cv-item">
+      <div class="cv-date">Fall 2025</div>
+      <div>
+        <div class="cv-title">Theseus, Trans*, and Teleportation &ndash; Topics in Personal Identity</div>
+        <div class="cv-sub">University of Bern (SEMP guest stay)</div>
+      </div>
+    </div>
+    <div class="cv-item">
+      <div class="cv-date">SS 2025</div>
+      <div>
+        <div class="cv-title">Kant &ndash; Prolegomena</div>
+        <div class="cv-sub">University of Osnabr&uuml;ck</div>
+      </div>
+    </div>
+    <div class="cv-item">
+      <div class="cv-date">WS 2024/25</div>
+      <div>
+        <div class="cv-title">Philosophy of Cosmology</div>
+        <div class="cv-sub">University of Osnabr&uuml;ck</div>
+      </div>
+    </div>
+    <div class="cv-item">
+      <div class="cv-date">SS 2024</div>
+      <div>
+        <div class="cv-title">Wittgenstein &ndash; Tractatus Logico-Philosophicus</div>
+        <div class="cv-sub">University of Osnabr&uuml;ck</div>
+      </div>
+    </div>
+    <div class="cv-item">
+      <div class="cv-date">SS 2023</div>
+      <div>
+        <div class="cv-title">Introduction to the Philosophy of AI</div>
+        <div class="cv-sub">University of Osnabr&uuml;ck</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:48px">
+    <h2 style="margin-bottom:6px">Awards &amp; Grants</h2>
+    <p class="section-sub">Fellowships, prizes, and scholarships</p>
+    <div class="award-list">
+      <div class="award-item">
+        <div class="award-year">2026</div>
+        <div>
+          <div class="award-name">Honourable Mention, ECAP.12</div>
+          <div class="award-desc">European Congress of Analytic Philosophy, Madrid</div>
+        </div>
+      </div>
+      <div class="award-item">
+        <div class="award-year">02&ndash;03/2026</div>
+        <div>
+          <div class="award-name">DAAD Doctoral Scholarship (4,000 EUR)</div>
+          <div class="award-desc">University of Edinburgh &mdash; Host: Mazviita Chirimuuta</div>
+        </div>
+      </div>
+      <div class="award-item">
+        <div class="award-year">09&ndash;10/2025</div>
+        <div>
+          <div class="award-name">Guest Lecturer Grant, SEMP (1,870 CHF)</div>
+          <div class="award-desc">Swiss-European Mobility Programme &mdash; University of Bern</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-inner">
+    <h2>Contact</h2>
+    <p class="section-sub">Happy to discuss research, collaborations, or postdoctoral opportunities.</p>
+    <div class="contact-links">
+      <div class="contact-row">
+        <div class="contact-icon">&#9993;</div>
+        <span><a href="mailto:johannes.brinz@uos.de">johannes.brinz@uos.de</a></span>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">&#127963;</div>
+        <span>Albrechtstr. 28a, 49076 Osnabr&uuml;ck, Germany</span>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">&#128279;</div>
+        <span>
+          <a href="https://orcid.org/0000-0002-2637-3513" target="_blank">ORCID</a>
+          &nbsp;&middot;&nbsp;
+          <a href="https://scholar.google.de/citations?hl=en&amp;user=cxGEqQcAAAAJ" target="_blank">Google Scholar</a>
+          &nbsp;&middot;&nbsp;
+          <a href="https://philarchive.org/archive/BRITFS-2" target="_blank">PhilArchive</a>
+          &nbsp;&middot;&nbsp;
+          <a href="https://bsky.app/profile/johannesbrinz.bsky.social" target="_blank">Bluesky</a>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 Johannes Brinz &middot; University of Osnabr&uuml;ck
+</footer>
+
+</body>
+</html>
