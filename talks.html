@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="0fjzTndBb74Z3QvcvdDzOFNMOpfULI5v3b42A15sVlc" />
+  <title>Talks – Johannes Brinz</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary: #2C2C2B;
+      --text-secondary: #7D7A75;
+      --canvas: #FFFFFF;
+      --surface-soft: #F9F8F7;
+      --surface-secondary: #F0EFED;
+      --border: #E6E5E3;
+      --accent: #2783DE;
+      --accent-soft: #E5F2FC;
+      --max-w: 760px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--canvas);
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+    nav .nav-inner {
+      max-width: calc(var(--max-w) + 96px);
+      margin: 0 auto;
+      padding: 0 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    nav .nav-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+    }
+    nav ul a {
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    nav ul a:hover { color: var(--text-primary); }
+
+    /* SECTIONS */
+    section {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 72px 24px;
+    }
+
+    /* HERO */
+    #hero {
+      padding-top: 88px;
+      padding-bottom: 88px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero-label {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+    .hero-tagline {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+    }
+    .btn-primary:hover { background: #1a6ec0; }
+    .btn-secondary {
+      background: var(--surface-soft);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: var(--surface-secondary); }
+
+    img.avatar {
+      object-fit: cover;
+      object-position: center top;
+    }
+    .avatar {
+      width: 116px;
+      height: 116px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #daeeff 0%, #c4dff8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 46px;
+      flex-shrink: 0;
+      border: 3px solid var(--border);
+      user-select: none;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    /* SECTION HEADINGS */
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .section-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+    }
+
+    /* ABOUT */
+    .about-text {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+    .about-text p + p { margin-top: 16px; }
+
+    /* TAGS */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+    .tag {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid #c8e2f8;
+    }
+    .tag-gray {
+      background: var(--surface-secondary);
+      color: var(--text-secondary);
+      border-color: var(--border);
+    }
+
+    /* PUBLICATIONS */
+    .pub-section + .pub-section { margin-top: 40px; }
+    .pub-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .pub-item {
+      padding: 20px 22px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color 0.15s;
+    }
+    .pub-item:hover { border-color: #a8d0f0; }
+    .pub-venue {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+    .pub-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    .pub-authors {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+    .pub-authors strong { color: var(--text-primary); font-weight: 600; }
+    .pub-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .pub-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .pub-link:hover { text-decoration: underline; }
+
+    /* TALKS */
+    .talk-group + .talk-group { margin-top: 32px; }
+    .talk-group-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .talk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .talk-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: baseline;
+      font-size: 14px;
+    }
+    .talk-year {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      padding-top: 1px;
+    }
+    .talk-title { font-style: italic; color: var(--text-primary); font-weight: 500; }
+    .talk-venue { color: var(--text-secondary); }
+
+    /* CV ITEMS */
+    .cv-list { display: flex; flex-direction: column; }
+    .cv-item {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 20px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cv-item:first-child { border-top: 1px solid var(--border); }
+    .cv-date { font-size: 13px; color: var(--text-secondary); padding-top: 2px; }
+    .cv-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+    .cv-sub { font-size: 13px; color: var(--text-secondary); }
+    .cv-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* AWARDS */
+    .award-list { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+    .award-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 20px;
+      font-size: 14px;
+    }
+    .award-year { color: var(--text-secondary); font-size: 13px; }
+    .award-name { font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+    .award-desc { font-size: 13px; color: var(--text-secondary); }
+
+    /* CONTACT */
+    #contact {
+      background: var(--surface-soft);
+      max-width: 100%;
+      border-top: 1px solid var(--border);
+    }
+    #contact .contact-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 72px 24px;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+    .contact-row a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .contact-row a:hover { text-decoration: underline; }
+    .contact-icon {
+      width: 32px; height: 32px;
+      background: var(--surface-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      nav .nav-inner { padding: 0 20px; }
+      nav ul { gap: 16px; }
+      #hero { grid-template-columns: 1fr; gap: 28px; padding-top: 56px; }
+      .avatar { width: 72px; height: 72px; font-size: 28px; }
+      h1 { font-size: 28px; }
+      section { padding: 56px 20px; }
+      .cv-item { grid-template-columns: 1fr; gap: 4px; }
+      .award-item { grid-template-columns: 1fr; gap: 2px; }
+      .talk-item { grid-template-columns: 1fr; gap: 2px; }
+    }
+  </style>
+</head>
+<body style="">
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-name">Johannes Brinz</a>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+<li><a href="publications.html">Publications</a></li>
+<li><a href="talks.html" style="color:var(--text-primary);font-weight:600">Talks</a></li>
+<li><a href="teaching.html">Teaching</a></li>
+<li><a href="outreach.html">Outreach</a></li>
+<li><a href="contact.html">Contact</a></li>
+
+    </ul>
+  </div>
+</nav>
+
+<section id="talks">
+<h2>Talks</h2>
+<p class="section-sub">Selected presentations at conferences and workshops</p>
+<div class="talk-group">
+<div class="talk-group-label">Invited</div>
+<div class="talk-list">
+<div class="talk-item">
+<div class="talk-year">2026</div>
+<div>
+<span class="talk-title">Three Versions of Functionalism</span>
+<span class="talk-venue"> — Workshop on the Unfolding Argument, FU Berlin</span>
+</div>
+</div>
+</div>
+</div>
+<div class="talk-group">
+<div class="talk-group-label">Contributed (selected)</div>
+<div class="talk-list">
+<div class="talk-item">
+<div class="talk-year">2026</div>
+<div>
+<span class="talk-title">Marr’s Fourth Level</span>
+<span class="talk-venue"> — Philosophical Issues in Neural Computation, Ruhr-Uni Bochum &amp; PPIG, University of Edinburgh</span>
+</div>
+</div>
+<div class="talk-item">
+<div class="talk-year">2026</div>
+<div>
+<span class="talk-title">Functionalism and Neural Realization</span>
+<span class="talk-venue"> — 6ICPH, University of Porto &amp; WiP Seminar, University of Edinburgh</span>
+</div>
+</div>
+<div class="talk-item">
+<div class="talk-year">2025</div>
+<div>
+<span class="talk-title">Can Artificial Neurons Perform the Functions of Biological Neurons?</span>
+<span class="talk-venue"> — SOPhiA, University of Salzburg &amp; MindMU, University of Missouri</span>
+</div>
+</div>
+<div class="talk-item">
+<div class="talk-year">2025</div>
+<div>
+<span class="talk-title">From Simulating to Duplicating the Brain</span>
+<span class="talk-venue"> — IACAP/AISB-25, University of Twente</span>
+</div>
+</div>
+<div class="talk-item">
+<div class="talk-year">2025</div>
+<div>
+<span class="talk-title">The Flashcard Sorter</span>
+<span class="talk-venue"> — GAP.12, Heinrich Heine University Düsseldorf &amp; LLMs Workshop, University of Bucharest &amp; PinT, Wroclaw</span>
+</div>
+</div>
+<div class="talk-item">
+<div class="talk-year">2024</div>
+<div>
+<span class="talk-title">Are Artificial Neurons Neurons?</span>
+<span class="talk-venue"> — 45th Wittgenstein Symposium, Kirchberg am Wechsel &amp; Models of Consciousness, Bamberg</span>
+</div>
+</div>
+<div class="talk-item">
+<div class="talk-year">2024</div>
+<div>
+<span class="talk-title">Neuromorphic AI: From Simulating Toward Duplicating the Brain</span>
+<span class="talk-venue"> — Forum on Philosophy, Engineering &amp; Technology, Karlsruhe</span>
+</div>
+</div>
+<div class="talk-item">
+<div class="talk-year">2024</div>
+<div>
+<span class="talk-title">From Simulating Towards Replicating the Brain</span>
+<span class="talk-venue"> — Philosophy of Neuromorphic AI, online  <a href="https://www.youtube.com/watch?v=Dk9Q_F45pNI&amp;t=3s" style="color:var(--accent);font-style:normal;font-size:12px" target="_blank">▶ Video</a></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<footer>© 2026 Johannes Brinz · Osnabrück University</footer>
+</body>
+</html>
